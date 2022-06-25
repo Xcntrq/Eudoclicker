@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f8add797cefa5a4aa43b89cea778550, type: 3}
-  m_Name: MobDataDefaultCube
+  m_Script: {fileID: 11500000, guid: 9dee844bf948ddd4dab26cce05a52d5b, type: 3}
+  m_Name: MovementBounds
   m_EditorClassIdentifier: 
-  _speed: 4
-  _turnProbability: 0.05
-  _turnAngleLimit: 60
-  _turnSpeed: 1
-  _movementBounds:
+  _value:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 5, y: 10, z: 10}
+    m_Extent: {x: 4.5, y: 10, z: 9.5}

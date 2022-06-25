@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 415617345892226868}
+  - component: {fileID: 415617345892226873}
   - component: {fileID: 415617345892226871}
   - component: {fileID: 415617345892226870}
-  - component: {fileID: 415617345892226873}
-  m_Layer: 0
-  m_Name: MobDefaultCube
+  m_Layer: 6
+  m_Name: DefaultCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,6 +34,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &415617345892226873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415617345892226869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bf2b6da0988fed49b5fa6e7931b0c41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mobDataDefaultCube: {fileID: 11400000, guid: 3f959f44e9bdba4468dc4a8ea12166e2,
+    type: 2}
+  _movementBounds: {fileID: 11400000, guid: dd1855e11569db747b7eebe3053dd827, type: 2}
+  _behaviorSeed: {fileID: 11400000, guid: 012c30452ca17be4f979fe9ceef76b8e, type: 2}
 --- !u!65 &415617345892226871
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -63,21 +79,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &415617345892226873
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 415617345892226869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bf2b6da0988fed49b5fa6e7931b0c41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mobDataDefaultCube: {fileID: 11400000, guid: 3f959f44e9bdba4468dc4a8ea12166e2,
-    type: 2}
-  _behaviorSeed: {fileID: 11400000, guid: 012c30452ca17be4f979fe9ceef76b8e, type: 2}
 --- !u!1 &415617346413673987
 GameObject:
   m_ObjectHideFlags: 0
@@ -89,7 +90,7 @@ GameObject:
   - component: {fileID: 415617346413673986}
   - component: {fileID: 415617346413673988}
   - component: {fileID: 415617346413673989}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

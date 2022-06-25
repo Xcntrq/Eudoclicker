@@ -1,3 +1,4 @@
+using nsBoundValue;
 using nsIntValue;
 using nsMob;
 using nsMobDataDefaultCube;
@@ -5,9 +6,10 @@ using UnityEngine;
 
 namespace nsMobDefaultCube
 {
-    public class MobDefaultCube : Mob
+    public class DefaultMob : Mob
     {
-        [SerializeField] private MobDataDefaultCube _mobDataDefaultCube;
+        [SerializeField] private DefaultMobData _mobDataDefaultCube;
+        [SerializeField] private BoundsValue _movementBounds;
         [SerializeField] private IntValue _behaviorSeed;
 
         private Rigidbody _rigidbody;
@@ -17,6 +19,7 @@ namespace nsMobDefaultCube
         private Vector3 _currentDirection;
         private Vector3 _targetDirection;
         private float _rotationLerp;
+        private float _speed;
         private bool _isTargetRotationReached;
 
         private float _turnDecider;
@@ -27,12 +30,19 @@ namespace nsMobDefaultCube
         private bool _isOutOnZ;
         private Vector3 _directionMirrored;
 
+        protected override void PostInitialize()
+        {
+            _speed = _mobDataDefaultCube.Speed * (1f + _waveNumber * _mobDataDefaultCube.WaveNumberMultiplier);
+        }
+
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
 
             int randomInt = Random.Range(int.MinValue, int.MaxValue);
             _behaviorRandom = _behaviorSeed.Value == 0 ? new System.Random(randomInt) : new System.Random(_behaviorSeed.Value);
+
+            _speed = _mobDataDefaultCube.Speed;
             _targetDirection = transform.forward; //Needed in DrawRaysForFun
             _isTargetRotationReached = true;
         }
@@ -40,18 +50,18 @@ namespace nsMobDefaultCube
         private void FixedUpdate()
         {
             //When out of bounds just mirror the direction and stop turning
-            _isOutOfBounds = _mobDataDefaultCube.MovementBounds.Contains(transform.position) == false;
+            _isOutOfBounds = _movementBounds.Value.Contains(transform.position) == false;
             if (_isOutOfBounds)
             {
-                _isOutOnX = (transform.position.x < _mobDataDefaultCube.MovementBounds.min.x) || (transform.position.x > _mobDataDefaultCube.MovementBounds.max.x);
-                _isOutOnZ = (transform.position.z < _mobDataDefaultCube.MovementBounds.min.z) || (transform.position.z > _mobDataDefaultCube.MovementBounds.max.z);
+                _isOutOnX = (transform.position.x < _movementBounds.Value.min.x) || (transform.position.x > _movementBounds.Value.max.x);
+                _isOutOnZ = (transform.position.z < _movementBounds.Value.min.z) || (transform.position.z > _movementBounds.Value.max.z);
 
                 _directionMirrored = transform.forward;
                 if (_isOutOnX) _directionMirrored.x *= -1f;
                 if (_isOutOnZ) _directionMirrored.z *= -1f;
 
                 transform.forward = _directionMirrored;
-                transform.position = _mobDataDefaultCube.MovementBounds.ClosestPoint(transform.position);
+                transform.position = _movementBounds.Value.ClosestPoint(transform.position);
                 _isTargetRotationReached = true;
             }
 
@@ -67,7 +77,7 @@ namespace nsMobDefaultCube
                 _rotationLerp = 0f;
             }
 
-            _rigidbody.velocity = transform.forward * _mobDataDefaultCube.Speed;
+            _rigidbody.velocity = transform.forward * _speed;
         }
 
         private void Update()

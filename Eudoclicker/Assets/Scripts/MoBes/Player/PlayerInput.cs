@@ -5,12 +5,7 @@ namespace nsPlayerInput
 {
     public class PlayerInput : MonoBehaviour
     {
-        private Camera _camera;
-
-        private void Awake()
-        {
-            _camera = GetComponent<Camera>();
-        }
+        [SerializeField] private Camera _camera;
 
         private void Update()
         {

@@ -1,12 +1,14 @@
 using nsBoundValue;
+using nsICoinDropper;
 using nsIntValue;
 using nsMob;
 using nsMobDataDefaultCube;
+using System;
 using UnityEngine;
 
 namespace nsMobDefaultCube
 {
-    public class DefaultMob : Mob
+    public class DefaultMob : Mob, ICoinDropper
     {
         [SerializeField] private DefaultMobData _mobDataDefaultCube;
         [SerializeField] private BoundsValue _movementBounds;
@@ -30,6 +32,8 @@ namespace nsMobDefaultCube
         private bool _isOutOnZ;
         private Vector3 _directionMirrored;
 
+        public event Action OnCoinDrop;
+
         protected override void PostInitialize()
         {
             _speed = _mobDataDefaultCube.Speed * (1f + _waveNumber * _mobDataDefaultCube.WaveNumberMultiplier);
@@ -39,7 +43,9 @@ namespace nsMobDefaultCube
         {
             _rigidbody = GetComponent<Rigidbody>();
 
-            int randomInt = Random.Range(int.MinValue, int.MaxValue);
+            OnDeath += Mob_OnDeath;
+
+            int randomInt = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
             _behaviorRandom = _behaviorSeed.Value == 0 ? new System.Random(randomInt) : new System.Random(_behaviorSeed.Value);
 
             _speed = _mobDataDefaultCube.Speed;
@@ -98,6 +104,17 @@ namespace nsMobDefaultCube
             Vector3 start = transform.position + transform.up * 0.1f;
             Debug.DrawRay(start, transform.forward * 2f, Color.blue, 0f);
             Debug.DrawRay(start, _targetDirection * 2f, Color.black, 0f);
+        }
+
+        public bool IsCoinDropSuccessful()
+        {
+            float _coinDropDecider = 1f - (float)_behaviorRandom.NextDouble();
+            return (_mobDataDefaultCube.CoinChance > 0f) && (_coinDropDecider <= _mobDataDefaultCube.CoinChance);
+        }
+
+        private void Mob_OnDeath(Mob mob)
+        {
+            if (IsCoinDropSuccessful()) OnCoinDrop?.Invoke();
         }
     }
 }

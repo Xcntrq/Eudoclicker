@@ -1,17 +1,16 @@
-using nsIMobForgetter;
+using System;
 using UnityEngine;
 
 namespace nsMob
 {
     public abstract class Mob : MonoBehaviour
     {
-        private IMobForgetter _mobSpawner;
-
         protected int _waveNumber;
 
-        public void Initialize(IMobForgetter mobSpawner, int waveNumber)
+        public event Action<Mob> OnDeath;
+
+        public void Initialize(int waveNumber)
         {
-            _mobSpawner = mobSpawner;
             _waveNumber = waveNumber;
             PostInitialize();
         }
@@ -23,7 +22,7 @@ namespace nsMob
 
         protected virtual void OnDestroy()
         {
-            if (_mobSpawner != null) _mobSpawner.ForgetMob(this);
+            OnDeath?.Invoke(this);
         }
     }
 }

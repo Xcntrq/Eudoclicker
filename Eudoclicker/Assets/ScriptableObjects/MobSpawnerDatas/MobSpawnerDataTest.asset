@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1ef3bec8e09e5542ac797dca0872be6, type: 3}
   m_Name: MobSpawnerDataTest
   m_EditorClassIdentifier: 
-  _maxMobAmount: 1000
-  _minCooldown: 0.01
-  _maxCooldown: 0.02
+  _gameOverMobCount: 100
+  _minCooldown: 2
+  _maxCooldown: 2
+  _deltaCooldown: 0

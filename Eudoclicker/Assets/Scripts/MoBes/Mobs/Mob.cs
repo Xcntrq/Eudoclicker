@@ -20,9 +20,10 @@ namespace nsMob
 
         }
 
-        protected virtual void OnDestroy()
+        public void Kill()
         {
             OnDeath?.Invoke(this);
+            Destroy(gameObject);
         }
     }
 }

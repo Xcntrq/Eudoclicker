@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: MobSpawnerData
   m_EditorClassIdentifier: 
   _gameOverMobCount: 10
-  _minCooldown: 6
-  _maxCooldown: 8
+  _minCooldown: 3
+  _maxCooldown: 5
   _deltaCooldown: 0.01

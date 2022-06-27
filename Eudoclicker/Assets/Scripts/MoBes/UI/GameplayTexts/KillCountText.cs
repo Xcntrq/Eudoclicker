@@ -16,9 +16,9 @@ namespace nsKillCountText
             _playerKillCount.OnValueChange += PlayerKillCount_OnValueChange;
         }
 
-        private void PlayerKillCount_OnValueChange(string text)
+        private void PlayerKillCount_OnValueChange(int value)
         {
-            _text.SetText(text);
+            _text.SetText(value.ToString());
         }
     }
 }

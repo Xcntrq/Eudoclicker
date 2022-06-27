@@ -25,8 +25,9 @@ namespace nsMobSpawner
 
         private HashSet<Mob> _spawnedMobs;
         private System.Random _random;
-        private SpawnerState _spawnerState;
+        private SpawnerState _currentSpawnerState;
         private float _timeLeft;
+        private float _timeAdded;
         private float _minCooldown;
         private float _maxCooldown;
         private int _waveNumber;
@@ -35,9 +36,12 @@ namespace nsMobSpawner
         public event Action<Mob> OnMobCreate;
         public event Action<string> OnMobCountChange;
         public event Action<string> OnSpawnTimerChange;
+        public event Action OnGameOverMobCountReach;
 
         private void Awake()
         {
+            _timeLeft = 0f;
+            _timeAdded = 0f;
             _waveNumber = 0;
             _minCooldown = _mobSpawnerData.MinCooldown;
             _maxCooldown = _mobSpawnerData.MaxCooldown;
@@ -46,7 +50,7 @@ namespace nsMobSpawner
             int randomInt = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
             _random = _seed.Value == 0 ? new System.Random(randomInt) : new System.Random(_seed.Value);
 
-            _spawnerState = SpawnerState.Spawning;
+            _currentSpawnerState = SpawnerState.Spawning;
         }
 
         private void Start()
@@ -57,17 +61,17 @@ namespace nsMobSpawner
 
         private void Update()
         {
-            switch (_spawnerState)
+            switch (_currentSpawnerState)
             {
                 case SpawnerState.Cooldown:
-                    _spawnTimerText = string.Concat("Spawn: ", _timeLeft.ToString("0.0"), " s");
-                    OnSpawnTimerChange?.Invoke(_spawnTimerText);
                     _timeLeft -= Time.deltaTime;
                     if (_timeLeft <= 0)
                     {
-                        OnSpawnTimerChange?.Invoke("Spawn: n/a s");
-                        _spawnerState = SpawnerState.Spawning;
+                        _timeLeft = 0;
+                        _currentSpawnerState = SpawnerState.Spawning;
                     }
+                    _spawnTimerText = string.Concat("Spawn: ", _timeLeft.ToString("0.0"), " s<br>(+", _timeAdded.ToString("0.0"), " s)");
+                    OnSpawnTimerChange?.Invoke(_spawnTimerText);
                     break;
                 case SpawnerState.Spawning:
                     Vector3 spawnPosition = RandomPointWithinBound(_spawnBounds.Value);
@@ -81,14 +85,16 @@ namespace nsMobSpawner
                     if (_spawnedMobs.Count < _mobSpawnerData.GameOverMobCount)
                     {
                         float lerpValue = (float)_random.NextDouble();
-                        _timeLeft = Mathf.Lerp(_minCooldown, _maxCooldown, lerpValue);
+                        _timeAdded = Mathf.Lerp(_minCooldown, _maxCooldown, lerpValue);
                         _minCooldown *= 1f - _mobSpawnerData.DeltaCooldown;
                         _maxCooldown *= 1f - _mobSpawnerData.DeltaCooldown;
-                        _spawnerState = SpawnerState.Cooldown;
+                        _timeLeft += _timeAdded;
+                        _currentSpawnerState = SpawnerState.Cooldown;
                     }
                     else
                     {
-                        _spawnerState = SpawnerState.Stopped;
+                        OnGameOverMobCountReach?.Invoke();
+                        _currentSpawnerState = SpawnerState.Stopped;
                     }
                     break;
                 case SpawnerState.Stopped:
@@ -109,6 +115,7 @@ namespace nsMobSpawner
         {
             if (_spawnedMobs.Contains(mob)) _spawnedMobs.Remove(mob);
             OnMobCountChange?.Invoke(string.Concat(_spawnedMobs.Count, '/', _mobSpawnerData.GameOverMobCount));
+            if (_spawnedMobs.Count == 0) _currentSpawnerState = SpawnerState.Spawning;
         }
     }
 }

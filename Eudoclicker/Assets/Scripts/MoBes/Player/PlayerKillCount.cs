@@ -11,7 +11,7 @@ namespace nsPlayerKillCount
 
         private int _value;
 
-        public event Action<string> OnValueChange;
+        public event Action<int> OnValueChange;
 
         private void Awake()
         {
@@ -21,7 +21,7 @@ namespace nsPlayerKillCount
 
         private void Start()
         {
-            OnValueChange?.Invoke(_value.ToString());
+            OnValueChange?.Invoke(_value);
         }
 
         private void MobSpawner_OnMobCreate(Mob mob)
@@ -32,7 +32,7 @@ namespace nsPlayerKillCount
         private void Mob_OnDeath(Mob mob)
         {
             _value++;
-            OnValueChange?.Invoke(_value.ToString());
+            OnValueChange?.Invoke(_value);
         }
     }
 }

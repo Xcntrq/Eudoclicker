@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ee5781abeb81c324186169464c501917
+guid: 73b729f6032fba44fa2226742430ff22
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,9 +9,8 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Share-TechMono
-  fallbackFontReferences:
-  - {fileID: 12800000, guid: 055aaad1cc3c18248a8cd46f3c204561, type: 3}
+  - Lets Coffee
+  fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1

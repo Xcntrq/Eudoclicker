@@ -16,7 +16,7 @@ namespace nsPlayerInput
                 if (Physics.Raycast(ray, out RaycastHit hit, 100.0f))
                 {
                     Mob mob = hit.collider.GetComponent<Mob>();
-                    if (mob != null) mob.Kill();
+                    if (mob != null) mob.DecreaceHealth(1);
 
                     Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 1f);
                 }

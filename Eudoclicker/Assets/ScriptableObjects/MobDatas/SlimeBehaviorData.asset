@@ -9,8 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b368021a4810c74cb96053ace0ef243, type: 3}
-  m_Name: MobList
+  m_Script: {fileID: 11500000, guid: 6f8add797cefa5a4aa43b89cea778550, type: 3}
+  m_Name: SlimeBehaviorData
   m_EditorClassIdentifier: 
-  _items:
-  - {fileID: 4264108201453946488, guid: 11e8a7e55c45d854e81660e22f14059b, type: 3}
+  _speed: 2
+  _waveNumberSpeedBoost: 0.02
+  _turnProbability: 0.05
+  _turnAngleLimit: 60
+  _turnSpeed: 2
+  _coinChance: 0.5

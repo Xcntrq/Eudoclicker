@@ -2,7 +2,7 @@ using nsBoundValue;
 using nsICoinDropper;
 using nsIntValue;
 using nsMob;
-using nsMobDataDefaultCube;
+using nsMobBehaviorData;
 using System;
 using UnityEngine;
 
@@ -10,12 +10,11 @@ namespace nsMobDefaultCube
 {
     public class DefaultMob : Mob, ICoinDropper
     {
-        [SerializeField] private DefaultMobData _mobDataDefaultCube;
+        [SerializeField] private MobBehaviorData _mobBehaviorData;
         [SerializeField] private BoundsValue _movementBounds;
         [SerializeField] private IntValue _behaviorSeed;
 
         private Rigidbody _rigidbody;
-
         private System.Random _behaviorRandom;
         private Vector3 _cachedDirection;
         private Vector3 _currentDirection;
@@ -36,7 +35,7 @@ namespace nsMobDefaultCube
 
         protected override void PostInitialize()
         {
-            _speed = _mobDataDefaultCube.Speed * (1f + _waveNumber * _mobDataDefaultCube.WaveNumberMultiplier);
+            _speed = _mobBehaviorData.Speed * (1f + _waveNumber * _mobBehaviorData.WaveNumberSpeedBoost);
         }
 
         private void Awake()
@@ -48,7 +47,7 @@ namespace nsMobDefaultCube
             int randomInt = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
             _behaviorRandom = _behaviorSeed.Value == 0 ? new System.Random(randomInt) : new System.Random(_behaviorSeed.Value);
 
-            _speed = _mobDataDefaultCube.Speed;
+            _speed = _mobBehaviorData.Speed;
             _targetDirection = transform.forward; //Needed in DrawRaysForFun
             _isTargetRotationReached = true;
         }
@@ -73,10 +72,10 @@ namespace nsMobDefaultCube
 
             //Roll the dice and turn if procs
             _turnDecider = 1f - (float)_behaviorRandom.NextDouble();
-            if ((_mobDataDefaultCube.TurnProbability > 0f) && (_turnDecider <= _mobDataDefaultCube.TurnProbability))
+            if ((_mobBehaviorData.TurnProbability > 0f) && (_turnDecider <= _mobBehaviorData.TurnProbability))
             {
                 _angleDeviationLerp = (float)_behaviorRandom.NextDouble();
-                _angleDeviation = Mathf.Lerp(-_mobDataDefaultCube.TurnAngleLimit, _mobDataDefaultCube.TurnAngleLimit, _angleDeviationLerp);
+                _angleDeviation = Mathf.Lerp(-_mobBehaviorData.TurnAngleLimit, _mobBehaviorData.TurnAngleLimit, _angleDeviationLerp);
                 _targetDirection = Quaternion.AngleAxis(_angleDeviation, Vector3.up) * transform.forward;
                 _cachedDirection = transform.forward;
                 _isTargetRotationReached = false;
@@ -90,7 +89,7 @@ namespace nsMobDefaultCube
         {
             if (_isTargetRotationReached == false)
             {
-                _rotationLerp += Time.deltaTime * _mobDataDefaultCube.TurnSpeed;
+                _rotationLerp += Time.deltaTime * _mobBehaviorData.TurnSpeed;
                 _currentDirection = Vector3.Lerp(_cachedDirection, _targetDirection, _rotationLerp);
                 transform.forward = _currentDirection;
                 if (_rotationLerp > 1f) _isTargetRotationReached = true;
@@ -109,7 +108,7 @@ namespace nsMobDefaultCube
         public bool IsCoinDropSuccessful()
         {
             float _coinDropDecider = 1f - (float)_behaviorRandom.NextDouble();
-            return (_mobDataDefaultCube.CoinChance > 0f) && (_coinDropDecider <= _mobDataDefaultCube.CoinChance);
+            return (_mobBehaviorData.CoinChance > 0f) && (_coinDropDecider <= _mobBehaviorData.CoinChance);
         }
 
         private void Mob_OnDeath(Mob mob)

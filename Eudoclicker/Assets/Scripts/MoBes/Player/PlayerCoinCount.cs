@@ -12,6 +12,8 @@ namespace nsPlayerCoinCount
 
         private int _value;
 
+        public int Value => _value;
+
         public event Action<string> OnValueChange;
 
         private void Awake()
@@ -33,6 +35,12 @@ namespace nsPlayerCoinCount
         private void CoinDropper_OnCoinDrop()
         {
             _value++;
+            OnValueChange?.Invoke(_value.ToString());
+        }
+
+        public void ReduceCoinCount(int amount)
+        {
+            _value -= amount;
             OnValueChange?.Invoke(_value.ToString());
         }
     }

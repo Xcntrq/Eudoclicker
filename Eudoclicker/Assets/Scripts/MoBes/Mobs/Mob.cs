@@ -1,9 +1,10 @@
+using nsIKillable;
 using System;
 using UnityEngine;
 
 namespace nsMob
 {
-    public abstract class Mob : MonoBehaviour
+    public abstract class Mob : MonoBehaviour, IKillable
     {
         protected int _waveNumber;
 

@@ -13,7 +13,7 @@ namespace nsMobCountText
         private void Awake()
         {
             _text = GetComponent<TextMeshProUGUI>();
-            _mobSpawner.OnMobCountChange += MobSpawner_OnMobCountChange; ;
+            _mobSpawner.OnMobCountChange += MobSpawner_OnMobCountChange;
         }
 
         private void MobSpawner_OnMobCountChange(string text)

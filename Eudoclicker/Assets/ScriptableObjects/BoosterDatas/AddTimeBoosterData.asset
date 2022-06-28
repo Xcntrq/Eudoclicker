@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b368021a4810c74cb96053ace0ef243, type: 3}
-  m_Name: MobList
+  m_Script: {fileID: 11500000, guid: da926e1bf1f74014e8f054a007756e82, type: 3}
+  m_Name: AddTimeBoosterData
   m_EditorClassIdentifier: 
-  _items:
-  - {fileID: 4264108201453946488, guid: 11e8a7e55c45d854e81660e22f14059b, type: 3}
+  _name: Time Bonus
+  _buttonSprite: {fileID: 21300000, guid: e918d53ae7c76da4b95bf2c458cba9cd, type: 3}

@@ -1,4 +1,5 @@
 using nsBoundValue;
+using nsIKillable;
 using nsIntValue;
 using nsMob;
 using nsMobList;
@@ -23,6 +24,7 @@ namespace nsMobSpawner
         [SerializeField] private MobSpawnerData _mobSpawnerData;
         [SerializeField] private IntValue _seed;
 
+        private Camera _cameraMain;
         private HashSet<Mob> _spawnedMobs;
         private System.Random _random;
         private SpawnerState _currentSpawnerState;
@@ -32,6 +34,8 @@ namespace nsMobSpawner
         private float _maxCooldown;
         private int _waveNumber;
         private string _spawnTimerText;
+
+        public IReadOnlyCollection<IKillable> SpawnedMobs => _spawnedMobs;
 
         public event Action<Mob> OnMobCreate;
         public event Action<string> OnMobCountChange;
@@ -57,6 +61,7 @@ namespace nsMobSpawner
         {
             OnMobCountChange?.Invoke(string.Concat(_spawnedMobs.Count, '/', _mobSpawnerData.GameOverMobCount));
             OnSpawnTimerChange?.Invoke(string.Empty);
+            _cameraMain = Camera.main;
         }
 
         private void Update()
@@ -77,7 +82,7 @@ namespace nsMobSpawner
                     Vector3 spawnPosition = RandomPointWithinBound(_spawnBounds.Value);
                     int index = _random.Next(_mobList.Items.Count);
                     Mob mob = Instantiate(_mobList.Items[index], spawnPosition, Quaternion.identity, transform);
-                    mob.Initialize(_waveNumber++);
+                    mob.Initialize(_waveNumber++, _cameraMain);
                     mob.OnDeath += Mob_OnDeath;
                     OnMobCreate?.Invoke(mob);
                     _spawnedMobs.Add(mob);
@@ -115,7 +120,13 @@ namespace nsMobSpawner
         {
             if (_spawnedMobs.Contains(mob)) _spawnedMobs.Remove(mob);
             OnMobCountChange?.Invoke(string.Concat(_spawnedMobs.Count, '/', _mobSpawnerData.GameOverMobCount));
-            if (_spawnedMobs.Count == 0) _currentSpawnerState = SpawnerState.Spawning;
+            if ((_spawnedMobs.Count == 0) && (_currentSpawnerState != SpawnerState.Stopped)) _currentSpawnerState = SpawnerState.Spawning;
+        }
+
+        public void AddSeconds(int amount)
+        {
+            _timeAdded = amount;
+            _timeLeft += _timeAdded;
         }
     }
 }

@@ -1,4 +1,5 @@
 using nsBoundValue;
+using nsIKillable;
 using nsIntValue;
 using nsMob;
 using nsMobList;
@@ -32,6 +33,8 @@ namespace nsMobSpawner
         private float _maxCooldown;
         private int _waveNumber;
         private string _spawnTimerText;
+
+        public IReadOnlyCollection<IKillable> SpawnedMobs => _spawnedMobs;
 
         public event Action<Mob> OnMobCreate;
         public event Action<string> OnMobCountChange;
@@ -116,6 +119,12 @@ namespace nsMobSpawner
             if (_spawnedMobs.Contains(mob)) _spawnedMobs.Remove(mob);
             OnMobCountChange?.Invoke(string.Concat(_spawnedMobs.Count, '/', _mobSpawnerData.GameOverMobCount));
             if (_spawnedMobs.Count == 0) _currentSpawnerState = SpawnerState.Spawning;
+        }
+
+        public void AddSeconds(int amount)
+        {
+            _timeAdded = amount;
+            _timeLeft += _timeAdded;
         }
     }
 }

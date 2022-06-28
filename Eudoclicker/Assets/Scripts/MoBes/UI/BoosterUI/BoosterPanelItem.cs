@@ -1,3 +1,4 @@
+using nsBooster;
 using nsBoosterIconFiller;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,18 +9,20 @@ namespace nsBoosterPanelItem
     {
         [SerializeField] private Image _mainImage;
 
-        public Button Button { get; private set; }
-        public BoosterIconFiller BoosterIconFiller { get; private set; }
+        private BoosterIconFiller _boosterIconFiller;
 
-        public void Initialize(Sprite mainSprite)
+        public Button Button { get; private set; }
+
+        public void Initialize(Booster booster)
         {
-            _mainImage.sprite = mainSprite;
+            _mainImage.sprite = booster.BoosterData.ButtonSprite;
+            _boosterIconFiller.Initialize(booster);
         }
 
         private void Awake()
         {
             Button = GetComponentInChildren<Button>();
-            BoosterIconFiller = GetComponentInChildren<BoosterIconFiller>();
+            _boosterIconFiller = GetComponentInChildren<BoosterIconFiller>();
         }
     }
 }

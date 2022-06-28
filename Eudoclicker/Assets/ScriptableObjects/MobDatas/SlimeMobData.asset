@@ -9,12 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6f8add797cefa5a4aa43b89cea778550, type: 3}
-  m_Name: DefaultMobData
+  m_Script: {fileID: 11500000, guid: a4c133f4d56083442be838114cbeb6f3, type: 3}
+  m_Name: SlimeMobData
   m_EditorClassIdentifier: 
-  _speed: 2
-  _waveNumberMultiplier: 0.02
-  _coinChance: 0.5
-  _turnProbability: 0.05
-  _turnAngleLimit: 60
-  _turnSpeed: 2
+  _maxHealth: 1
+  _waveNumberHealthBoost: 0.05

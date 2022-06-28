@@ -9,8 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b368021a4810c74cb96053ace0ef243, type: 3}
-  m_Name: MobList
+  m_Script: {fileID: 11500000, guid: f85ed405d58ff1b488caba31368bb97d, type: 3}
+  m_Name: HealthLow
   m_EditorClassIdentifier: 
-  _items:
-  - {fileID: 4264108201453946488, guid: 11e8a7e55c45d854e81660e22f14059b, type: 3}
+  _value: {r: 1, g: 0, b: 0, a: 1}

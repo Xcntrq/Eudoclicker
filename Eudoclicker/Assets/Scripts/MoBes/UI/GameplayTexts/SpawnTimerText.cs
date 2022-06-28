@@ -13,7 +13,7 @@ namespace nsSpawnTimerText
         private void Awake()
         {
             _text = GetComponent<TextMeshProUGUI>();
-            _mobSpawner.OnSpawnTimerChange += MobSpawner_OnSpawnTimerChange; ;
+            _mobSpawner.OnSpawnTimerChange += MobSpawner_OnSpawnTimerChange;
         }
 
         private void MobSpawner_OnSpawnTimerChange(string text)

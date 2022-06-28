@@ -18,7 +18,7 @@ namespace nsBoosterPanel
             foreach (Booster _booster in _boosterList.Items)
             {
                 BoosterPanelItem newBoosterPanelItem = Instantiate(_pfBoosterPanelItem, transform);
-                newBoosterPanelItem.Initialize(_booster.BoosterData.ButtonSprite);
+                newBoosterPanelItem.Initialize(_booster);
                 newBoosterPanelItem.Button.onClick.AddListener(
                     () =>
                     {
@@ -30,10 +30,10 @@ namespace nsBoosterPanel
                         }
                         else
                         {
-                            OnButtonClick?.Invoke(allConditionMessages);
+                            string text = string.Concat(_booster.BoosterData.Name, "<br><br>", allConditionMessages);
+                            OnButtonClick?.Invoke(text);
                         }
                     });
-                _booster.OnReadyPercentagesCheck += newBoosterPanelItem.BoosterIconFiller.ChangeScale;
             }
         }
     }

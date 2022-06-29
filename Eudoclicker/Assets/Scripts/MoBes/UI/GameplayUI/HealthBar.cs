@@ -1,5 +1,5 @@
 using nsColorValue;
-using nsHealth;
+using nsIHealthValue;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,8 +7,8 @@ namespace nsHealthBar
 {
     public class HealthBar : MonoBehaviour
     {
-        [SerializeField] private RectTransform _valueBar;
-        [SerializeField] private Image _image;
+        [SerializeField] private RectTransform _valueBarRT;
+        [SerializeField] private Image _valueBarImage;
         [SerializeField] private ColorValue _highColor;
         [SerializeField] private ColorValue _mediumColor;
         [SerializeField] private ColorValue _lowColor;
@@ -17,16 +17,16 @@ namespace nsHealthBar
 
         private void Awake()
         {
+            _camera = Camera.main;
             gameObject.SetActive(false);
         }
 
-        public void Initialize(Health health, Camera camera)
+        public void Initialize(IHealthValue healthValue)
         {
-            _camera = camera;
-            health.OnValueChange += Health_OnValueChange;
+            healthValue.OnValueChange += HealthValue_OnValueChange;
         }
 
-        private void Health_OnValueChange(float valueNormalized)
+        private void HealthValue_OnValueChange(float valueNormalized)
         {
             if (valueNormalized > 0.99f)
             {
@@ -35,20 +35,20 @@ namespace nsHealthBar
             }
             else if (valueNormalized > 0.66f)
             {
-                _image.color = _highColor.Value;
+                _valueBarImage.color = _highColor.Value;
             }
             else if (valueNormalized > 0.33f)
             {
-                _image.color = _mediumColor.Value;
+                _valueBarImage.color = _mediumColor.Value;
             }
             else
             {
-                _image.color = _lowColor.Value;
+                _valueBarImage.color = _lowColor.Value;
             }
 
-            Vector3 newLocalScale = _valueBar.localScale;
+            Vector3 newLocalScale = _valueBarRT.localScale;
             newLocalScale.x = valueNormalized;
-            _valueBar.localScale = newLocalScale;
+            _valueBarRT.localScale = newLocalScale;
             gameObject.SetActive(true);
         }
 

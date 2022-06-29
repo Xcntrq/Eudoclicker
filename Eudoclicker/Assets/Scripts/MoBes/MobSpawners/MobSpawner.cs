@@ -24,7 +24,6 @@ namespace nsMobSpawner
         [SerializeField] private MobSpawnerData _mobSpawnerData;
         [SerializeField] private IntValue _seed;
 
-        private Camera _cameraMain;
         private HashSet<Mob> _spawnedMobs;
         private System.Random _random;
         private SpawnerState _currentSpawnerState;
@@ -35,7 +34,7 @@ namespace nsMobSpawner
         private int _waveNumber;
         private string _spawnTimerText;
 
-        public IReadOnlyCollection<IKillable> SpawnedMobs => _spawnedMobs;
+        public IReadOnlyCollection<IKillable> KillableMobs => _spawnedMobs;
 
         public event Action<Mob> OnMobCreate;
         public event Action<string> OnMobCountChange;
@@ -61,7 +60,6 @@ namespace nsMobSpawner
         {
             OnMobCountChange?.Invoke(string.Concat(_spawnedMobs.Count, '/', _mobSpawnerData.GameOverMobCount));
             OnSpawnTimerChange?.Invoke(string.Empty);
-            _cameraMain = Camera.main;
         }
 
         private void Update()
@@ -82,7 +80,7 @@ namespace nsMobSpawner
                     Vector3 spawnPosition = RandomPointWithinBound(_spawnBounds.Value);
                     int index = _random.Next(_mobList.Items.Count);
                     Mob mob = Instantiate(_mobList.Items[index], spawnPosition, Quaternion.identity, transform);
-                    mob.Initialize(_waveNumber++, _cameraMain);
+                    mob.Initialize(_waveNumber++);
                     mob.OnDeath += Mob_OnDeath;
                     OnMobCreate?.Invoke(mob);
                     _spawnedMobs.Add(mob);

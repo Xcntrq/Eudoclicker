@@ -1,9 +1,10 @@
+using nsIHealthValue;
 using System;
 using UnityEngine;
 
 namespace nsHealth
 {
-    public class Health
+    public class Health : IHealthValue
     {
         private readonly int _maxValue;
         private int _value;

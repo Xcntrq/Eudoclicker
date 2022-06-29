@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6f8add797cefa5a4aa43b89cea778550, type: 3}
-  m_Name: SlimeBehaviorData
+  m_Name: SlimeBehaviourData
   m_EditorClassIdentifier: 
   _speed: 2
   _waveNumberSpeedBoost: 0.02

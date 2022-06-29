@@ -13,4 +13,9 @@ MonoBehaviour:
   m_Name: MobList
   m_EditorClassIdentifier: 
   _items:
-  - {fileID: 4426823496899985303, guid: 9f9ae7412a40a7242b846cb35d6dd0b5, type: 3}
+  - _mob: {fileID: 4426823496899985303, guid: 9f9ae7412a40a7242b846cb35d6dd0b5, type: 3}
+    _weight: 10
+  - _mob: {fileID: 7723716487781768614, guid: c4b001e1aba00614eb3d3511f46bae6c, type: 3}
+    _weight: 5
+  - _mob: {fileID: 6242221518513523352, guid: a72195ddef47ced4292aa4a8853b1a40, type: 3}
+    _weight: 1

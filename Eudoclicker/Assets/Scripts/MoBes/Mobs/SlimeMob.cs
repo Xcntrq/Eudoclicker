@@ -32,13 +32,18 @@ namespace nsSlimeMob
 
         protected override void PreDeath()
         {
-            if (IsCoinDropSuccessful()) OnCoinDrop?.Invoke();
+            float chance;
+            for (chance = _coinDropperData.CoinChance; chance >= 1f; chance--)
+            {
+                OnCoinDrop?.Invoke();
+            }
+            if (IsCoinDropSuccessful(chance)) OnCoinDrop?.Invoke();
         }
 
-        private bool IsCoinDropSuccessful()
+        private bool IsCoinDropSuccessful(float chance)
         {
             float _coinDropDecider = 1f - (float)_behaviourRandom.NextDouble();
-            return (_coinDropperData.CoinChance > 0f) && (_coinDropDecider <= _coinDropperData.CoinChance);
+            return (chance > 0f) && (_coinDropDecider <= chance);
         }
     }
 }

@@ -417,7 +417,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defaultBehaviourData: {fileID: 11400000, guid: 3f959f44e9bdba4468dc4a8ea12166e2,
     type: 2}
-  _movementBounds: {fileID: 11400000, guid: dd1855e11569db747b7eebe3053dd827, type: 2}
+  _movementBounds: {fileID: 11400000, guid: ab4ffde6a6909c34e9a155ba06a06bb5, type: 2}
   _behaviourSeed: {fileID: 11400000, guid: 012c30452ca17be4f979fe9ceef76b8e, type: 2}
 --- !u!65 &4426823496899985307
 BoxCollider:

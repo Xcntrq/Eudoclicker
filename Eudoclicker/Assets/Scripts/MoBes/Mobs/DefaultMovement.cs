@@ -6,10 +6,12 @@ using nsIntValue;
 using nsIWaveNumberHolder;
 using UnityEngine;
 using nsIMobBehaviour;
+using System;
+using nsISpeedCarrier;
 
 namespace nsDefaultMovement
 {
-    public class DefaultMovement : MonoBehaviour, IMobBehaviour
+    public class DefaultMovement : MonoBehaviour, IMobBehaviour, ISpeedCarrier
     {
         [SerializeField] private DefaultMovementData _defaultBehaviourData;
         [SerializeField] private BoundsValue _movementBounds;
@@ -29,6 +31,18 @@ namespace nsDefaultMovement
         private bool _isOutOfBounds;
         private bool _isTargetRotationReached;
 
+        private float Speed
+        {
+            get { return _speed; }
+            set
+            {
+                _speed = value;
+                OnSpeedChange?.Invoke(_speed);
+            }
+        }
+
+        public event Action<float> OnSpeedChange;
+
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
@@ -38,7 +52,7 @@ namespace nsDefaultMovement
             _behaviourRandom = _behaviourSeed.Value == 0 ? new SysRandom(randomInt) : new SysRandom(_behaviourSeed.Value);
 
             transform.forward = RandomDirection(180f);
-            _speed = _defaultBehaviourData.Speed;
+            Speed = _defaultBehaviourData.Speed;
             _targetDirection = transform.forward; //Needed in DrawRaysForFun
             _isTargetRotationReached = true;
         }
@@ -46,7 +60,7 @@ namespace nsDefaultMovement
         private void OnEnable()
         {
             //Mobs should enable all of their IMobBehaviours after getting a WaveNumber
-            _speed = _defaultBehaviourData.Speed * (1f + _waveNumberHolder.WaveNumber * _defaultBehaviourData.WaveNumberSpeedBoost);
+            Speed = _defaultBehaviourData.Speed * (1f + _waveNumberHolder.WaveNumber * _defaultBehaviourData.WaveNumberSpeedBoost);
         }
 
         private void FixedUpdate()
@@ -77,7 +91,7 @@ namespace nsDefaultMovement
                 _rotationLerp = 0f;
             }
 
-            _rigidbody.velocity = transform.forward * _speed;
+            _rigidbody.velocity = transform.forward * Speed;
         }
 
         private void Update()

@@ -3,6 +3,7 @@ using nsIKillable;
 using nsIntValue;
 using nsMob;
 using nsMobList;
+using nsMobListItem;
 using nsMobSpawnerData;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace nsMobSpawner
         private int _waveNumber;
         private string _spawnTimerText;
 
+        //The one and only properly encapsulated property!
         public IReadOnlyCollection<IKillable> KillableMobs => _spawnedMobs;
 
         public event Action<Mob> OnMobCreate;
@@ -77,9 +79,7 @@ namespace nsMobSpawner
                     OnSpawnTimerChange?.Invoke(_spawnTimerText);
                     break;
                 case SpawnerState.Spawning:
-                    Vector3 spawnPosition = RandomPointWithinBound(_spawnBounds.Value);
-                    int index = _random.Next(_mobList.Items.Count);
-                    Mob mob = Instantiate(_mobList.Items[index], spawnPosition, Quaternion.identity, transform);
+                    Mob mob = SpawnRandomMob();
                     mob.Initialize(_waveNumber++);
                     mob.OnDeath += Mob_OnDeath;
                     OnMobCreate?.Invoke(mob);
@@ -103,6 +103,29 @@ namespace nsMobSpawner
                 case SpawnerState.Stopped:
                     break;
             }
+        }
+
+        private Mob SpawnRandomMob()
+        {
+            Mob mobToSpawn = null;
+            float totalWeight = 0;
+            foreach (MobListItem mobListItem in _mobList.Items)
+            {
+                totalWeight += mobListItem.Weight;
+            }
+            float lerpValue = (float)_random.NextDouble();
+            float weight = Mathf.Lerp(0f, totalWeight, lerpValue);
+            foreach (MobListItem mobListItem in _mobList.Items)
+            {
+                weight -= mobListItem.Weight;
+                if (weight <= 0f)
+                {
+                    mobToSpawn = mobListItem.Mob;
+                    break;
+                }
+            }
+            Vector3 spawnPosition = RandomPointWithinBound(_spawnBounds.Value);
+            return Instantiate(mobToSpawn, spawnPosition, Quaternion.identity, transform);
         }
 
         private Vector3 RandomPointWithinBound(Bounds bounds)

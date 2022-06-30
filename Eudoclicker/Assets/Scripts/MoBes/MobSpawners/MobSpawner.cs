@@ -1,5 +1,6 @@
 using nsBoundValue;
 using nsIKillable;
+using nsILevelable;
 using nsIntValue;
 using nsMob;
 using nsMobList;
@@ -35,8 +36,19 @@ namespace nsMobSpawner
         private int _waveNumber;
         private string _spawnTimerText;
 
-        //The one and only properly encapsulated property!
-        public IReadOnlyCollection<IKillable> KillableMobs => _spawnedMobs;
+        //The one and only well encapsulated property!
+        public IReadOnlyCollection<IKillable> KillableMobs
+        {
+            get
+            {
+                HashSet<IKillable> killables = new HashSet<IKillable>();
+                foreach (Mob mob in _spawnedMobs)
+                {
+                    if (mob is IKillable killable) killables.Add(killable);
+                }
+                return killables;
+            }
+        }
 
         public event Action<Mob> OnMobCreate;
         public event Action<string> OnMobCountChange;
@@ -80,8 +92,9 @@ namespace nsMobSpawner
                     break;
                 case SpawnerState.Spawning:
                     Mob mob = SpawnRandomMob();
-                    mob.Initialize(_waveNumber++);
-                    mob.OnDeath += Mob_OnDeath;
+                    _waveNumber++;
+                    if (mob is ILevelable levelable) levelable.SetLevel(_waveNumber);
+                    if (mob is IKillable killable) killable.OnDeath += Killable_OnDeath;
                     OnMobCreate?.Invoke(mob);
                     _spawnedMobs.Add(mob);
                     OnMobCountChange?.Invoke(string.Concat(_spawnedMobs.Count, '/', _mobSpawnerData.GameOverMobCount));
@@ -137,11 +150,17 @@ namespace nsMobSpawner
             return new Vector3(spawnX, 0, spawnZ);
         }
 
-        private void Mob_OnDeath(Mob mob)
+        private void Killable_OnDeath(IKillable killable)
         {
-            if (_spawnedMobs.Contains(mob)) _spawnedMobs.Remove(mob);
-            OnMobCountChange?.Invoke(string.Concat(_spawnedMobs.Count, '/', _mobSpawnerData.GameOverMobCount));
-            if ((_spawnedMobs.Count == 0) && (_currentSpawnerState != SpawnerState.Stopped)) _currentSpawnerState = SpawnerState.Spawning;
+            if ((killable is Mob mob) && _spawnedMobs.Contains(mob))
+            {
+                _spawnedMobs.Remove(mob);
+                OnMobCountChange?.Invoke(string.Concat(_spawnedMobs.Count, '/', _mobSpawnerData.GameOverMobCount));
+            }
+            if ((_spawnedMobs.Count == 0) && (_currentSpawnerState != SpawnerState.Stopped))
+            {
+                _currentSpawnerState = SpawnerState.Spawning;
+            }
         }
 
         public void AddSeconds(int amount)

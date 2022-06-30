@@ -3,21 +3,20 @@ using SysRandom = System.Random;
 using nsBoundValue;
 using nsDefaultMovementData;
 using nsIntValue;
-using nsIWaveNumberHolder;
 using UnityEngine;
 using nsIMobBehaviour;
 using System;
-using nsISpeedCarrier;
+using nsIMovementSpeedChanger;
+using nsILevelable;
 
 namespace nsDefaultMovement
 {
-    public class DefaultMovement : MonoBehaviour, IMobBehaviour, ISpeedCarrier
+    public class DefaultMovement : MonoBehaviour, IMobBehaviour, IMovementSpeedChanger, ILevelable
     {
-        [SerializeField] private DefaultMovementData _defaultBehaviourData;
+        [SerializeField] private DefaultMovementData _defaultMovementData;
         [SerializeField] private BoundsValue _movementBounds;
         [SerializeField] private IntValue _behaviourSeed;
 
-        private IWaveNumberCarrier _waveNumberHolder;
         private SysRandom _behaviourRandom;
         private Rigidbody _rigidbody;
 
@@ -31,36 +30,24 @@ namespace nsDefaultMovement
         private bool _isOutOfBounds;
         private bool _isTargetRotationReached;
 
-        private float Speed
-        {
-            get { return _speed; }
-            set
-            {
-                _speed = value;
-                OnSpeedChange?.Invoke(_speed);
-            }
-        }
-
         public event Action<float> OnSpeedChange;
 
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _waveNumberHolder = GetComponent<IWaveNumberCarrier>();
 
             int randomInt = UniRandom.Range(int.MinValue, int.MaxValue);
             _behaviourRandom = _behaviourSeed.Value == 0 ? new SysRandom(randomInt) : new SysRandom(_behaviourSeed.Value);
 
             transform.forward = RandomDirection(180f);
-            Speed = _defaultBehaviourData.Speed;
             _targetDirection = transform.forward; //Needed in DrawRaysForFun
             _isTargetRotationReached = true;
         }
 
-        private void OnEnable()
+        public void SetLevel(int level)
         {
-            //Mobs should enable all of their IMobBehaviours after getting a WaveNumber
-            Speed = _defaultBehaviourData.Speed * (1f + _waveNumberHolder.WaveNumber * _defaultBehaviourData.WaveNumberSpeedBoost);
+            _speed = _defaultMovementData.Speed * (1f + level * _defaultMovementData.LevelBonus);
+            OnSpeedChange?.Invoke(_speed);
         }
 
         private void FixedUpdate()
@@ -83,22 +70,22 @@ namespace nsDefaultMovement
 
             //Roll the dice and turn if procs
             _turnDecider = 1f - (float)_behaviourRandom.NextDouble();
-            if ((_defaultBehaviourData.TurnProbability > 0f) && (_turnDecider <= _defaultBehaviourData.TurnProbability))
+            if ((_defaultMovementData.TurnProbability > 0f) && (_turnDecider <= _defaultMovementData.TurnProbability))
             {
-                _targetDirection = RandomDirection(_defaultBehaviourData.TurnAngleLimit);
+                _targetDirection = RandomDirection(_defaultMovementData.TurnAngleLimit);
                 _cachedDirection = transform.forward;
                 _isTargetRotationReached = false;
                 _rotationLerp = 0f;
             }
 
-            _rigidbody.velocity = transform.forward * Speed;
+            _rigidbody.velocity = transform.forward * _speed;
         }
 
         private void Update()
         {
             if (_isTargetRotationReached == false)
             {
-                _rotationLerp += Time.deltaTime * _defaultBehaviourData.TurnSpeed;
+                _rotationLerp += Time.deltaTime * _defaultMovementData.TurnSpeed;
                 _currentDirection = Vector3.Lerp(_cachedDirection, _targetDirection, _rotationLerp);
                 transform.forward = _currentDirection;
                 if (_rotationLerp > 1f) _isTargetRotationReached = true;

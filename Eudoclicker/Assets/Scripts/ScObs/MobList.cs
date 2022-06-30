@@ -1,4 +1,3 @@
-using nsMob;
 using nsMobListItem;
 using System.Collections.Generic;
 using UnityEngine;

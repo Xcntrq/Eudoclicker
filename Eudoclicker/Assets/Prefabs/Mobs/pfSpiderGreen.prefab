@@ -572,6 +572,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8994465976963908250}
   - component: {fileID: 6242221518513523352}
+  - component: {fileID: 8792174209909910508}
+  - component: {fileID: 2084333509381706865}
   - component: {fileID: 1652097326915501073}
   - component: {fileID: 5854816588653847696}
   - component: {fileID: 3654728140920441491}
@@ -610,9 +612,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d553346db8f36304887e0c5b9268e20e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mobData: {fileID: 11400000, guid: 7d18f31d480b2664888cdb3fae6f0edb, type: 2}
-  _healthBar: {fileID: 8070957333330417009}
-  _coinDropperData: {fileID: 11400000, guid: 6bf6a97a324409749940e2bb36edc67a, type: 2}
+--- !u!114 &8792174209909910508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2920708465253496316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58445c2b0d059254e8c0dd35a99ca710, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthData: {fileID: 11400000, guid: 7d18f31d480b2664888cdb3fae6f0edb, type: 2}
+--- !u!114 &2084333509381706865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2920708465253496316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08b6a1c43e7972a42925f24c8e9ebc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _coinsData: {fileID: 11400000, guid: 6bf6a97a324409749940e2bb36edc67a, type: 2}
   _behaviourSeed: {fileID: 11400000, guid: 012c30452ca17be4f979fe9ceef76b8e, type: 2}
 --- !u!114 &1652097326915501073
 MonoBehaviour:
@@ -626,7 +651,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c92144725e21d264bb30f81e6b42a08d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultBehaviourData: {fileID: 11400000, guid: 2ec970085c8753a428529cd6ffbc2a5b,
+  _defaultMovementData: {fileID: 11400000, guid: 2ec970085c8753a428529cd6ffbc2a5b,
     type: 2}
   _movementBounds: {fileID: 11400000, guid: b9399ac7ccc98754bbc4fd32a82234ec, type: 2}
   _behaviourSeed: {fileID: 11400000, guid: 012c30452ca17be4f979fe9ceef76b8e, type: 2}
@@ -890,7 +915,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e151b17774347e4b90c3fad0a3efb83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mob: {fileID: 6242221518513523352}
   _multiplier: {fileID: 11400000, guid: 8f76a4f278bc80947b8789ef71085bda, type: 2}
 --- !u!95 &758988703054636719
 Animator:

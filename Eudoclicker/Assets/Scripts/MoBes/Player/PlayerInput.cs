@@ -1,4 +1,4 @@
-using nsMob;
+using nsIDamagable;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -6,7 +6,12 @@ namespace nsPlayerInput
 {
     public class PlayerInput : MonoBehaviour
     {
-        [SerializeField] private Camera _camera;
+        private Camera _camera;
+
+        private void Awake()
+        {
+            _camera = Camera.main;
+        }
 
         private void Update()
         {
@@ -15,8 +20,8 @@ namespace nsPlayerInput
                 Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, 100.0f))
                 {
-                    Mob mob = hit.collider.GetComponent<Mob>();
-                    if (mob != null) mob.DecreaceHealth(1);
+                    IDamagable damagable = hit.collider.GetComponent<IDamagable>();
+                    if (damagable != null) damagable.DecreaceHealth(1);
 
                     Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 1f);
                 }

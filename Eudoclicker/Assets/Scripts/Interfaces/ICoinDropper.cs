@@ -4,6 +4,6 @@ namespace nsICoinDropper
 {
     public interface ICoinDropper
     {
-        public event Action OnCoinDrop;
+        public event Action<int> OnCoinDrop;
     }
 }

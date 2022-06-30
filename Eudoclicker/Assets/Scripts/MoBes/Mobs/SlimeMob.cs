@@ -1,49 +1,60 @@
-using UniRandom = UnityEngine.Random;
-using SysRandom = System.Random;
-using nsCoinDropperData;
-using nsICoinDropper;
-using nsISpawnFinishWaiter;
+using nsICoins;
+using nsISpawnFinisher;
 using nsMob;
 using System;
-using UnityEngine;
-using nsIntValue;
+using nsICoinDropper;
+using nsIKillable;
+using nsIMobBehaviour;
+using nsIHealth;
+using nsIDamagable;
+using nsILevelable;
 
 namespace nsSlimeMob
 {
-    public class SlimeMob : Mob, ICoinDropper, ISpawnFinishWaiter
+    public class SlimeMob : Mob, ILevelable, IKillable, IDamagable, ICoinDropper
     {
-        [SerializeField] private CoinDropperData _coinDropperData;
-        [SerializeField] private IntValue _behaviourSeed;
+        private ISpawnFinisher _spawnFinisher;
+        private IHealth _health;
+        private ICoins _coins;
 
-        private SysRandom _behaviourRandom;
+        public event Action<int> OnCoinDrop;
+        public event Action<IKillable> OnDeath;
 
-        public event Action OnCoinDrop;
+        private void Awake()
+        {
+            _otherLevelables = GetOtherLevelables();
+            _health = GetComponent<IHealth>();
+            _coins = GetComponent<ICoins>();
 
-        public void OnSpawnFinish()
+            _spawnFinisher = GetComponentInChildren<ISpawnFinisher>();
+            _spawnFinisher.OnSpawnFinish += SpawnFinisher_OnSpawnFinish;
+
+            _mobBehaviours = GetComponents<IMobBehaviour>();
+            SetMobBehavioursActive(false);
+        }
+
+        public void SetLevel(int level)
+        {
+            UpdateOtherLevelables(level);
+        }
+
+        private void SpawnFinisher_OnSpawnFinish()
         {
             SetMobBehavioursActive(true);
         }
 
-        protected override void PostInitialize()
+        public void Kill()
         {
-            int randomInt = UniRandom.Range(int.MinValue, int.MaxValue);
-            _behaviourRandom = _behaviourSeed.Value == 0 ? new SysRandom(randomInt) : new SysRandom(_behaviourSeed.Value);
+            int coinsDropped = _coins.Drop();
+            OnCoinDrop?.Invoke(coinsDropped);
+            OnDeath?.Invoke(this);
+            Destroy(gameObject);
         }
 
-        protected override void PreDeath()
+        public void DecreaceHealth(int amount)
         {
-            float chance;
-            for (chance = _coinDropperData.CoinChance; chance >= 1f; chance--)
-            {
-                OnCoinDrop?.Invoke();
-            }
-            if (IsCoinDropSuccessful(chance)) OnCoinDrop?.Invoke();
-        }
-
-        private bool IsCoinDropSuccessful(float chance)
-        {
-            float _coinDropDecider = 1f - (float)_behaviourRandom.NextDouble();
-            return (chance > 0f) && (_coinDropDecider <= chance);
+            _health.Decrease(amount);
+            if (_health.Value == 0) Kill();
         }
     }
 }

@@ -32,15 +32,15 @@ namespace nsPlayerCoinCount
             if (mob is ICoinDropper coinDropper) coinDropper.OnCoinDrop += CoinDropper_OnCoinDrop;
         }
 
-        private void CoinDropper_OnCoinDrop()
+        private void CoinDropper_OnCoinDrop(int coinAmount)
         {
-            _value++;
+            _value += coinAmount;
             OnValueChange?.Invoke(_value.ToString());
         }
 
-        public void ReduceCoinCount(int amount)
+        public void ReduceCoinCount(int coinAmount)
         {
-            _value -= amount;
+            _value -= coinAmount;
             OnValueChange?.Invoke(_value.ToString());
         }
     }

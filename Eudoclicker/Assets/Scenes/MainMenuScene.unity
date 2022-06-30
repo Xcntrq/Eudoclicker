@@ -1978,7 +1978,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Current name: Mike'
+  m_text: 'Current name: Starcow'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c08bba4fe50d8064fa2dff6abe791d81, type: 2}
   m_sharedMaterial: {fileID: 4819654869971058271, guid: c08bba4fe50d8064fa2dff6abe791d81,

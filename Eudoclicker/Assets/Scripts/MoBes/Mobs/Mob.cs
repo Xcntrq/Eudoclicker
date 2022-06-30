@@ -1,47 +1,40 @@
-using nsHealth;
-using nsHealthBar;
-using nsIKillable;
-using nsMobData;
-using System;
+using nsILevelable;
+using nsIMobBehaviour;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace nsMob
 {
-    public abstract class Mob : MonoBehaviour, IKillable
+    public abstract class Mob : MonoBehaviour
     {
-        [SerializeField] private HealthBar _healthBar;
-        [SerializeField] private MobData _mobData;
+        protected IMobBehaviour[] _mobBehaviours;
+        protected List<ILevelable> _otherLevelables;
 
-        private Health _health;
-
-        protected int _waveNumber;
-
-        public event Action<Mob> OnDeath;
-
-        public void Initialize(int waveNumber, Camera camera)
+        protected void SetMobBehavioursActive(bool value)
         {
-            _waveNumber = waveNumber;
-            int healthAmount = (int)(_mobData.MaxHealth * (1f + _waveNumber * _mobData.WaveNumberHealthBoost));
-            _health = new Health(healthAmount);
-            _healthBar.Initialize(_health, camera);
-            PostInitialize();
+            foreach (IMobBehaviour mobBehaviour in _mobBehaviours)
+            {
+                mobBehaviour.SetComponentActive(value);
+            }
         }
 
-        protected virtual void PostInitialize()
+        protected List<ILevelable> GetOtherLevelables()
         {
-
+            List<ILevelable> otherLevelables = new List<ILevelable>();
+            ILevelable[] allLevelables = GetComponentsInChildren<ILevelable>();
+            foreach (ILevelable levelable in allLevelables)
+            {
+                if (!levelable.Equals(this)) otherLevelables.Add(levelable);
+            }
+            return otherLevelables;
         }
 
-        public void DecreaceHealth(int amount)
+        protected void UpdateOtherLevelables(int level)
         {
-            _health.Decrease(amount);
-            if (_health.Value == 0) Kill();
-        }
-
-        public void Kill()
-        {
-            OnDeath?.Invoke(this);
-            Destroy(gameObject);
+            foreach (ILevelable levelable in _otherLevelables)
+            {
+                levelable.SetLevel(level);
+            }
         }
     }
 }

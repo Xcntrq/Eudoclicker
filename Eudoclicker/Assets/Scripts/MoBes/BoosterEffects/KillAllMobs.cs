@@ -1,6 +1,5 @@
 using nsBoosterEffect;
 using nsIKillable;
-using nsMob;
 using nsMobSpawner;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +14,7 @@ namespace nsKillAllMobs
         {
             message = string.Concat("All mobs killed");
             List<IKillable> killables = new List<IKillable>();
-            foreach (IKillable killable in _mobSpawner.SpawnedMobs)
+            foreach (IKillable killable in _mobSpawner.KillableMobs)
             {
                 killables.Add(killable);
             }

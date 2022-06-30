@@ -1,3 +1,4 @@
+using nsIKillable;
 using nsMob;
 using nsMobSpawner;
 using System;
@@ -26,10 +27,10 @@ namespace nsPlayerKillCount
 
         private void MobSpawner_OnMobCreate(Mob mob)
         {
-            mob.OnDeath += Mob_OnDeath;
+            if (mob is IKillable killable) killable.OnDeath += Mob_OnDeath;
         }
 
-        private void Mob_OnDeath(Mob mob)
+        private void Mob_OnDeath(IKillable killable)
         {
             _value++;
             OnValueChange?.Invoke(_value);

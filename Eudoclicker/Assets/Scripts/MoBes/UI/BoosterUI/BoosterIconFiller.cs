@@ -1,4 +1,4 @@
-using nsBooster;
+using nsIBooster;
 using UnityEngine;
 
 namespace nsBoosterIconFiller
@@ -7,14 +7,14 @@ namespace nsBoosterIconFiller
     {
         private RectTransform _rectTransform;
 
-        public void Initialize(Booster booster)
-        {
-            booster.OnReadyPercentagesCheck += Booster_OnReadyPercentagesCheck;
-        }
-
         private void Awake()
         {
             _rectTransform = GetComponent<RectTransform>();
+        }
+
+        public void Initialize(IBooster booster)
+        {
+            booster.OnReadyPercentagesCheck += Booster_OnReadyPercentagesCheck;
         }
 
         public void Booster_OnReadyPercentagesCheck(float scale)

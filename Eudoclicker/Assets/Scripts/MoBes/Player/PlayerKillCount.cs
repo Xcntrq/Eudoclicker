@@ -12,6 +12,8 @@ namespace nsPlayerKillCount
 
         private int _value;
 
+        public int Value => _value;
+
         public event Action<int> OnValueChange;
 
         private void Awake()

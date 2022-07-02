@@ -9,22 +9,23 @@ namespace nsPlayerCoinCount
     public class PlayerCoinCount : MonoBehaviour
     {
         [SerializeField] private MobSpawner _mobSpawner;
+        [SerializeField] private int _startAmount;
 
         private int _value;
 
         public int Value => _value;
 
-        public event Action<string> OnValueChange;
+        public event Action<int> OnValueChange;
 
         private void Awake()
         {
-            _value = 0;
+            _value = _startAmount;
             _mobSpawner.OnMobCreate += MobSpawner_OnMobCreate;
         }
 
         private void Start()
         {
-            OnValueChange?.Invoke(_value.ToString());
+            OnValueChange?.Invoke(_value);
         }
 
         private void MobSpawner_OnMobCreate(Mob mob)
@@ -35,13 +36,19 @@ namespace nsPlayerCoinCount
         private void CoinDropper_OnCoinDrop(int coinAmount)
         {
             _value += coinAmount;
-            OnValueChange?.Invoke(_value.ToString());
+            OnValueChange?.Invoke(_value);
         }
 
         public void ReduceCoinCount(int coinAmount)
         {
             _value -= coinAmount;
-            OnValueChange?.Invoke(_value.ToString());
+            OnValueChange?.Invoke(_value);
+        }
+
+        public void IncreaceCoinCount(int coinAmount)
+        {
+            _value += coinAmount;
+            OnValueChange?.Invoke(_value);
         }
     }
 }

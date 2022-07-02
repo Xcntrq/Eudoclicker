@@ -16,9 +16,9 @@ namespace nsMobCountText
             _mobSpawner.OnMobCountChange += MobSpawner_OnMobCountChange;
         }
 
-        private void MobSpawner_OnMobCountChange(string text)
+        private void MobSpawner_OnMobCountChange(int value1, int value2)
         {
-            _text.SetText(text);
+            _text.SetText(string.Concat(value1, '/', value2));
         }
     }
 }

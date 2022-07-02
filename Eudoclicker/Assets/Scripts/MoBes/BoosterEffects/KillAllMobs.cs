@@ -18,6 +18,7 @@ namespace nsKillAllMobs
             {
                 killables.Add(killable);
             }
+            //The list doesn't care if they die because we're going backwards
             for (int i = killables.Count - 1; i >= 0; i--)
             {
                 killables[i].Kill();

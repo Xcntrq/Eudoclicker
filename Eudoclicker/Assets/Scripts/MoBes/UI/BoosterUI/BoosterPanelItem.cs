@@ -1,5 +1,7 @@
-using nsBooster;
+using nsBoosterCDText;
 using nsBoosterIconFiller;
+using nsBoosterReadyDot;
+using nsIBooster;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,22 +9,28 @@ namespace nsBoosterPanelItem
 {
     public class BoosterPanelItem : MonoBehaviour
     {
-        [SerializeField] private Image _mainImage;
+        [SerializeField] private Image _buttonImage;
 
         private BoosterIconFiller _boosterIconFiller;
+        private BoosterReadyDot _boosterReadyDot;
+        private BoosterCDText _boosterCDText;
 
         public Button Button { get; private set; }
 
-        public void Initialize(Booster booster)
-        {
-            _mainImage.sprite = booster.BoosterData.ButtonSprite;
-            _boosterIconFiller.Initialize(booster);
-        }
-
         private void Awake()
         {
-            Button = GetComponentInChildren<Button>();
             _boosterIconFiller = GetComponentInChildren<BoosterIconFiller>();
+            _boosterReadyDot = GetComponentInChildren<BoosterReadyDot>();
+            _boosterCDText = GetComponentInChildren<BoosterCDText>();
+            Button = GetComponentInChildren<Button>();
+        }
+
+        public void Initialize(IBooster booster)
+        {
+            if (_buttonImage != null) _buttonImage.sprite = booster.ButtonSprite;
+            if (_boosterIconFiller != null) _boosterIconFiller.Initialize(booster);
+            if (_boosterReadyDot != null) _boosterReadyDot.Initialize(booster);
+            if (_boosterCDText != null) _boosterCDText.Initialize(booster);
         }
     }
 }

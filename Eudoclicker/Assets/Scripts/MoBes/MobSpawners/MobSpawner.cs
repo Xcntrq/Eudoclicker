@@ -1,4 +1,6 @@
 using nsBoundValue;
+using nsIDamageable;
+using nsIFreezable;
 using nsIKillable;
 using nsILevelable;
 using nsIntValue;
@@ -34,7 +36,10 @@ namespace nsMobSpawner
         private float _minCooldown;
         private float _maxCooldown;
         private int _waveNumber;
+        private int _gameOverMobCount;
         private string _spawnTimerText;
+
+        public float TimeLeft => _timeLeft;
 
         //The one and only well encapsulated property!
         public IReadOnlyCollection<IKillable> KillableMobs
@@ -50,8 +55,34 @@ namespace nsMobSpawner
             }
         }
 
+        public IReadOnlyCollection<IDamageable> DamageableMobs
+        {
+            get
+            {
+                HashSet<IDamageable> damageables = new HashSet<IDamageable>();
+                foreach (Mob mob in _spawnedMobs)
+                {
+                    if (mob is IDamageable damageable) damageables.Add(damageable);
+                }
+                return damageables;
+            }
+        }
+
+        public IReadOnlyCollection<IFreezable> FreezableMobs
+        {
+            get
+            {
+                HashSet<IFreezable> freezables = new HashSet<IFreezable>();
+                foreach (Mob mob in _spawnedMobs)
+                {
+                    if (mob is IFreezable freezable) freezables.Add(freezable);
+                }
+                return freezables;
+            }
+        }
+
         public event Action<Mob> OnMobCreate;
-        public event Action<string> OnMobCountChange;
+        public event Action<int, int> OnMobCountChange;
         public event Action<string> OnSpawnTimerChange;
         public event Action OnGameOverMobCountReach;
 
@@ -60,6 +91,7 @@ namespace nsMobSpawner
             _timeLeft = 0f;
             _timeAdded = 0f;
             _waveNumber = 0;
+            _gameOverMobCount = _mobSpawnerData.GameOverMobCount;
             _minCooldown = _mobSpawnerData.MinCooldown;
             _maxCooldown = _mobSpawnerData.MaxCooldown;
             _spawnedMobs = new HashSet<Mob>();
@@ -72,7 +104,7 @@ namespace nsMobSpawner
 
         private void Start()
         {
-            OnMobCountChange?.Invoke(string.Concat(_spawnedMobs.Count, '/', _mobSpawnerData.GameOverMobCount));
+            OnMobCountChange?.Invoke(_spawnedMobs.Count, _gameOverMobCount);
             OnSpawnTimerChange?.Invoke(string.Empty);
         }
 
@@ -97,8 +129,8 @@ namespace nsMobSpawner
                     if (mob is IKillable killable) killable.OnDeath += Killable_OnDeath;
                     OnMobCreate?.Invoke(mob);
                     _spawnedMobs.Add(mob);
-                    OnMobCountChange?.Invoke(string.Concat(_spawnedMobs.Count, '/', _mobSpawnerData.GameOverMobCount));
-                    if (_spawnedMobs.Count < _mobSpawnerData.GameOverMobCount)
+                    OnMobCountChange?.Invoke(_spawnedMobs.Count, _gameOverMobCount);
+                    if (_spawnedMobs.Count < _gameOverMobCount)
                     {
                         float lerpValue = (float)_random.NextDouble();
                         _timeAdded = Mathf.Lerp(_minCooldown, _maxCooldown, lerpValue);
@@ -155,7 +187,7 @@ namespace nsMobSpawner
             if ((killable is Mob mob) && _spawnedMobs.Contains(mob))
             {
                 _spawnedMobs.Remove(mob);
-                OnMobCountChange?.Invoke(string.Concat(_spawnedMobs.Count, '/', _mobSpawnerData.GameOverMobCount));
+                OnMobCountChange?.Invoke(_spawnedMobs.Count, _gameOverMobCount);
             }
             if ((_spawnedMobs.Count == 0) && (_currentSpawnerState != SpawnerState.Stopped))
             {
@@ -163,10 +195,16 @@ namespace nsMobSpawner
             }
         }
 
-        public void AddSeconds(int amount)
+        public void AddTime(float amount)
         {
             _timeAdded = amount;
             _timeLeft += _timeAdded;
+        }
+
+        public void IncreaseGameOverMobCount(int amount)
+        {
+            _gameOverMobCount += amount;
+            OnMobCountChange?.Invoke(_spawnedMobs.Count, _gameOverMobCount);
         }
     }
 }

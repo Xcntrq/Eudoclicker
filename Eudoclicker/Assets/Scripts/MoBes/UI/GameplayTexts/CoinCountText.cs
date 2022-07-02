@@ -16,9 +16,9 @@ namespace nsCoinCountText
             _playerCoinCount.OnValueChange += PlayerCoinCount_OnValueChange;
         }
 
-        private void PlayerCoinCount_OnValueChange(string text)
+        private void PlayerCoinCount_OnValueChange(int coinAmount)
         {
-            _text.SetText(text);
+            _text.SetText(coinAmount.ToString());
         }
     }
 }

@@ -1,4 +1,5 @@
-using nsIDamagable;
+using nsIDamageable;
+using nsIDamage;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -6,10 +7,12 @@ namespace nsPlayerInput
 {
     public class PlayerInput : MonoBehaviour
     {
+        private IDamage _damage;
         private Camera _camera;
 
         private void Awake()
         {
+            _damage = GetComponent<IDamage>();
             _camera = Camera.main;
         }
 
@@ -20,15 +23,15 @@ namespace nsPlayerInput
                 Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, 100.0f))
                 {
-                    IDamagable damagable = hit.collider.GetComponent<IDamagable>();
-                    if (damagable != null) damagable.DecreaceHealth(1);
+                    IDamageable damagable = hit.collider.GetComponent<IDamageable>();
+                    if (damagable != null) damagable.DecreaceHealth(_damage.Value);
 
                     Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 1f);
                 }
             }
         }
 
-        public bool IsOverGameObject()
+        private bool IsOverGameObject()
         {
             if (EventSystem.current.IsPointerOverGameObject()) return true;
 

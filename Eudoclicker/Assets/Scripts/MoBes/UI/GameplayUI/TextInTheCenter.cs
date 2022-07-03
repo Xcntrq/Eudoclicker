@@ -16,6 +16,7 @@ namespace nsTextInTheCenter
         {
             _text = GetComponent<TextMeshProUGUI>();
             _boosterPanel.OnButtonClick += BoosterPanel_OnButtonClick;
+            _text.SetText(string.Empty);
         }
 
         private void BoosterPanel_OnButtonClick(string text)

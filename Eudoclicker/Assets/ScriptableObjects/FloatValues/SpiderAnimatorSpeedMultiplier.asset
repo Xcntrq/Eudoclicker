@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c16a99a0cbdb3764fadfb9249d401eb4, type: 3}
   m_Name: SpiderAnimatorSpeedMultiplier
   m_EditorClassIdentifier: 
-  _value: 0.25
+  _value: 0.22

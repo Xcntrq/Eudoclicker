@@ -8,12 +8,10 @@ namespace nsPauseButton
     {
         [SerializeField] private GameStateSwitch _gameStateSwitch;
 
-        private Button _button;
-
         private void Awake()
         {
-            _button = GetComponent<Button>();
-            _button.onClick.AddListener(() => _gameStateSwitch.TogglePause());
+            Button button = GetComponentInChildren<Button>();
+            button.onClick.AddListener(() => _gameStateSwitch.TogglePause());
         }
     }
 }

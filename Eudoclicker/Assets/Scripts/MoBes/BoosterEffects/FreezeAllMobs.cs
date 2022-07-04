@@ -2,6 +2,7 @@ using nsBoosterEffect;
 using nsIFreezable;
 using nsIKillable;
 using nsMobSpawner;
+using nsOnDeathEventArgs;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -54,9 +55,9 @@ namespace nsFreezeAllMobs
             _timeLeft = _time;
         }
 
-        private void Killable_OnDeath(IKillable killable)
+        private void Killable_OnDeath(OnDeathEventArgs onDeathEventArgs)
         {
-            if ((killable is IFreezable freezable) && _freezables.Contains(freezable)) _freezables.Remove(freezable);
+            if ((onDeathEventArgs.Killable is IFreezable freezable) && _freezables.Contains(freezable)) _freezables.Remove(freezable);
         }
     }
 }

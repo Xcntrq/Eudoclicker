@@ -30,8 +30,8 @@ namespace nsOnOrientation2Activator
         {
             IsActive = true; //In case OnGameStateActivator is present on the gameObject
             _orientation2Provider = FindObjectOfType<OrientationProvider>(false);
-            _orientation2Provider.OnOrientation2Change += Orientation2Provider_OnOrientation2Change;
             _onGameStateActivator = GetComponent<OnGameStateActivator>();
+            _orientation2Provider.OnOrientation2Change += Orientation2Provider_OnOrientation2Change;
         }
 
         private void Orientation2Provider_OnOrientation2Change(Orientation2 deviceOrientation2)

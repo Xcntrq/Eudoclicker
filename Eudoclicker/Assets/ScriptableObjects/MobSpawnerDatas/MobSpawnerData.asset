@@ -16,3 +16,4 @@ MonoBehaviour:
   _minCooldown: 3
   _maxCooldown: 5
   _deltaCooldown: 0.01
+  _delayWhenZero: 1

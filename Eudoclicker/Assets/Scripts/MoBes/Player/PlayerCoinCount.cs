@@ -1,6 +1,7 @@
 using nsICoinDropper;
 using nsMob;
 using nsMobSpawner;
+using nsOnCoinDropEventArgs;
 using System;
 using UnityEngine;
 
@@ -33,9 +34,9 @@ namespace nsPlayerCoinCount
             if (mob is ICoinDropper coinDropper) coinDropper.OnCoinDrop += CoinDropper_OnCoinDrop;
         }
 
-        private void CoinDropper_OnCoinDrop(int coinAmount)
+        private void CoinDropper_OnCoinDrop(OnCoinDropEventArgs onCoinDropEventArgs)
         {
-            _value += coinAmount;
+            _value += onCoinDropEventArgs.Amount;
             OnValueChange?.Invoke(_value);
         }
 

@@ -1,3 +1,5 @@
+using UniRandom = UnityEngine.Random;
+using SysRandom = System.Random;
 using nsBoundValue;
 using nsIDamageable;
 using nsIFreezable;
@@ -11,6 +13,8 @@ using nsMobSpawnerData;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
+using nsOnDeathEventArgs;
 
 namespace nsMobSpawner
 {
@@ -29,7 +33,7 @@ namespace nsMobSpawner
         [SerializeField] private IntValue _seed;
 
         private HashSet<Mob> _spawnedMobs;
-        private System.Random _random;
+        private SysRandom _random;
         private SpawnerState _currentSpawnerState;
         private float _timeLeft;
         private float _timeAdded;
@@ -96,8 +100,8 @@ namespace nsMobSpawner
             _maxCooldown = _mobSpawnerData.MaxCooldown;
             _spawnedMobs = new HashSet<Mob>();
 
-            int randomInt = UnityEngine.Random.Range(int.MinValue, int.MaxValue);
-            _random = _seed.Value == 0 ? new System.Random(randomInt) : new System.Random(_seed.Value);
+            int randomInt = UniRandom.Range(int.MinValue, int.MaxValue);
+            _random = _seed.Value == 0 ? new SysRandom(randomInt) : new SysRandom(_seed.Value);
 
             _currentSpawnerState = SpawnerState.Spawning;
         }
@@ -182,17 +186,24 @@ namespace nsMobSpawner
             return new Vector3(spawnX, 0, spawnZ);
         }
 
-        private void Killable_OnDeath(IKillable killable)
+        private void Killable_OnDeath(OnDeathEventArgs onDeathEventArgs)
         {
-            if ((killable is Mob mob) && _spawnedMobs.Contains(mob))
+            if ((onDeathEventArgs.Killable is Mob mob) && _spawnedMobs.Contains(mob))
             {
                 _spawnedMobs.Remove(mob);
                 OnMobCountChange?.Invoke(_spawnedMobs.Count, _gameOverMobCount);
             }
             if ((_spawnedMobs.Count == 0) && (_currentSpawnerState != SpawnerState.Stopped))
             {
-                _currentSpawnerState = SpawnerState.Spawning;
+                StartCoroutine(DelaySpawn());
             }
+        }
+
+        private IEnumerator DelaySpawn()
+        {
+            _currentSpawnerState = SpawnerState.Stopped;
+            yield return new WaitForSeconds(_mobSpawnerData.DelayWhenZero);
+            _currentSpawnerState = SpawnerState.Spawning;
         }
 
         public void AddTime(float amount)

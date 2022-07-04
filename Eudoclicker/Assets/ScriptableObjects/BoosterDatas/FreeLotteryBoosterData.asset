@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Free Lottery Tickets
   _buttonSprite: {fileID: 21300000, guid: 143aa10ace4981645ace644ae1891216, type: 3}
+  _successClip:
+    _audioClip: {fileID: 8300000, guid: 75e44b4ae1d53f84bb8f20542d5e29f7, type: 3}
+    _volume: 0.5

@@ -44,3 +44,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mobSpawner: {fileID: 0}
+  _muteMobs: 1

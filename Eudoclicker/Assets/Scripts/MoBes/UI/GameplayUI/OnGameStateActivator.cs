@@ -1,9 +1,10 @@
 using nsGameStateSwitch;
+using nsOnOrientation2Activator;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace nsActiveOnGameStates
+namespace nsOnGameStateActivator
 {
     [Serializable]
     public struct StateAction
@@ -15,13 +16,19 @@ namespace nsActiveOnGameStates
         public bool IsActive => _isActive;
     }
 
-    public class ActiveOnGameStates : MonoBehaviour
+    public class OnGameStateActivator : MonoBehaviour
     {
         [SerializeField] private GameStateSwitch _gameStateSwitch;
         [SerializeField] private List<StateAction> _items;
 
+        private OnOrientation2Activator _onOrientationActivator;
+
+        public bool IsActive { get; private set; }
+
         private void Awake()
         {
+            IsActive = true; //In case OnOrientationActivator is present on the gameObject
+            _onOrientationActivator = GetComponent<OnOrientation2Activator>();
             _gameStateSwitch.OnGameStateChange += GameStateSwitch_OnGameStateChange;
         }
 
@@ -29,7 +36,12 @@ namespace nsActiveOnGameStates
         {
             foreach (StateAction stateAction in _items)
             {
-                if (stateAction.GameState == gameState) gameObject.SetActive(stateAction.IsActive);
+                if (stateAction.GameState == gameState)
+                {
+                    bool isOnOrientationActivatorActive = (_onOrientationActivator == null) || _onOrientationActivator.IsActive;
+                    IsActive = stateAction.IsActive;
+                    gameObject.SetActive(IsActive && isOnOrientationActivatorActive);
+                }
             }
         }
     }

@@ -1,6 +1,7 @@
-using nsIKillable;
+using nsIPointsGiver;
 using nsMob;
 using nsMobSpawner;
+using nsOnPointGiveEventArgs;
 using System;
 using UnityEngine;
 
@@ -29,12 +30,12 @@ namespace nsPlayerKillCount
 
         private void MobSpawner_OnMobCreate(Mob mob)
         {
-            if (mob is IKillable killable) killable.OnDeath += Mob_OnDeath;
+            if (mob is IPointsGiver pointsGiver) pointsGiver.OnPointsGive += PointsGiver_OnPointsGive;
         }
 
-        private void Mob_OnDeath(IKillable killable)
+        private void PointsGiver_OnPointsGive(OnPointsGiveEventArgs onDeathEventArgs)
         {
-            _value++;
+            _value += onDeathEventArgs.Amount;
             OnValueChange?.Invoke(_value);
         }
     }

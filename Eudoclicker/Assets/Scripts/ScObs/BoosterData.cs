@@ -1,3 +1,4 @@
+using nsVolumedClip;
 using UnityEngine;
 
 namespace nsBoosterData
@@ -7,8 +8,10 @@ namespace nsBoosterData
     {
         [SerializeField] private string _name;
         [SerializeField] private Sprite _buttonSprite;
+        [SerializeField] private VolumedClip _successClip;
 
         public string Name => _name;
         public Sprite ButtonSprite => _buttonSprite;
+        public VolumedClip SuccessClip => _successClip;
     }
 }

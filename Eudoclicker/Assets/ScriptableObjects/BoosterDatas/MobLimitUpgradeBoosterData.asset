@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Mob Limit Upgrade
   _buttonSprite: {fileID: 21300000, guid: 33f2c0da7bfb64543afb8d14ea5366a6, type: 3}
+  _successClip:
+    _audioClip: {fileID: 8300000, guid: 619b8b71adb0c8046839f6f3ec48aa63, type: 3}
+    _volume: 0.5

@@ -16,13 +16,13 @@ namespace nsTextInTheCenter
         {
             _text = GetComponent<TextMeshProUGUI>();
             _boosterPanel.OnButtonClick += BoosterPanel_OnButtonClick;
+            _text.SetText(string.Empty);
         }
 
-        private void BoosterPanel_OnButtonClick(string text)
+        private void BoosterPanel_OnButtonClick(OnButtonClickEventArgs onButtonClickEventArgs)
         {
             StopAllCoroutines();
-            _text.SetText(text);
-            gameObject.SetActive(true);
+            _text.SetText(onButtonClickEventArgs.Text);
             StartCoroutine(ShowMessage());
         }
 
@@ -30,7 +30,7 @@ namespace nsTextInTheCenter
         {
             var waitForSeconds = new WaitForSeconds(_messageDelay);
             yield return waitForSeconds;
-            gameObject.SetActive(false);
+            _text.SetText(string.Empty);
         }
     }
 }

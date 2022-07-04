@@ -94,6 +94,11 @@ namespace nsDefaultMovement
             DrawRaysForFun();
         }
 
+        private void OnDisable()
+        {
+            _rigidbody.velocity = transform.forward;
+        }
+
         private void DrawRaysForFun()
         {
             Vector3 start = transform.position + transform.up * 0.1f;

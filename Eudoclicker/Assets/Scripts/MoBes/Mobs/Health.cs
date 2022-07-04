@@ -2,6 +2,7 @@ using nsHealthData;
 using nsIHealth;
 using nsIHealthValue;
 using nsILevelable;
+using nsOnHealthDecreaceEventArgs;
 using System;
 using UnityEngine;
 
@@ -26,10 +27,16 @@ namespace nsHealth
             OnValueChange?.Invoke(ValueNormalized);
         }
 
-        public void Decrease(int amount)
+        public OnHealthDecreaceEventArgs Decrease(int amount, bool isSoundNeeded)
         {
-            _value = Mathf.Clamp(_value - amount, 0, _value);
-            OnValueChange?.Invoke(ValueNormalized);
+            int newValue = Mathf.Clamp(_value - amount, 0, _value);
+            bool hasChanged = newValue != _value;
+            if (hasChanged)
+            {
+                _value = newValue;
+                OnValueChange?.Invoke(ValueNormalized);
+            }
+            return new OnHealthDecreaceEventArgs((hasChanged && isSoundNeeded) ? _healthData.HurtClip : null);
         }
     }
 }

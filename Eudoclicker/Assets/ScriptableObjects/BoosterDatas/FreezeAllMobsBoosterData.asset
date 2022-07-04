@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Freeze
   _buttonSprite: {fileID: 21300000, guid: aaf4b085b32e5d6448995c4eb3b87cba, type: 3}
+  _successClip:
+    _audioClip: {fileID: 8300000, guid: dcee4340d14de24408768942126dfe19, type: 3}
+    _volume: 0.5

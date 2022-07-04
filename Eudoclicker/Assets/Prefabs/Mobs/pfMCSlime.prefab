@@ -362,6 +362,7 @@ GameObject:
   - component: {fileID: 4426823496899985303}
   - component: {fileID: 162549878547192210}
   - component: {fileID: 2835144596415291350}
+  - component: {fileID: 3568788098232880269}
   - component: {fileID: 4426823496899985302}
   - component: {fileID: 4426823496899985307}
   - component: {fileID: 4426823496899985306}
@@ -400,6 +401,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba6ab16c74aa1d94697b732fb7fdc239, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mobSpawnData: {fileID: 11400000, guid: bf780cf5d8b5aee4a91acb8817d9bcbf, type: 2}
+  _mobDeathData: {fileID: 11400000, guid: c1d2573504022ac48896be28402a461a, type: 2}
 --- !u!114 &162549878547192210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -427,6 +430,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _coinsData: {fileID: 11400000, guid: bcf1f05cfd503f748aed6eadc556802d, type: 2}
   _behaviourSeed: {fileID: 11400000, guid: 012c30452ca17be4f979fe9ceef76b8e, type: 2}
+--- !u!114 &3568788098232880269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4426823496899985305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 895be81d85fc8f14f933697a8fe76144, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _pointsData: {fileID: 11400000, guid: 3fed6093551f43e41948d4e0d5a9387b, type: 2}
 --- !u!114 &4426823496899985302
 MonoBehaviour:
   m_ObjectHideFlags: 0

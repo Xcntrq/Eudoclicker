@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Damage Upgrade
   _buttonSprite: {fileID: 21300000, guid: 71505c28c43e6324f8c040607307a797, type: 3}
+  _successClip:
+    _audioClip: {fileID: 8300000, guid: 5a10c3cca5c17df4f987ac25d5acbc7c, type: 3}
+    _volume: 0.5

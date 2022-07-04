@@ -1,5 +1,7 @@
 using nsILevelable;
 using nsIMobBehaviour;
+using nsMobSpawnData;
+using nsVolumedClip;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +9,10 @@ namespace nsMob
 {
     public abstract class Mob : MonoBehaviour
     {
+        [SerializeField] protected MobSpawnData _mobSpawnData;
+
+        public VolumedClip SpawnClip => _mobSpawnData.SpawnClip;
+
         protected IMobBehaviour[] _mobBehaviours;
         protected List<ILevelable> _otherLevelables;
 

@@ -12,16 +12,7 @@ namespace nsOnOrientation2ChildrenRefresher
         private void Awake()
         {
             _orientation2Provider = FindObjectOfType<OrientationProvider>(false);
-        }
-
-        private void OnEnable()
-        {
             _orientation2Provider.OnOrientation2Change += Orientation2Provider_OnOrientation2Change;
-        }
-
-        private void OnDisable()
-        {
-            _orientation2Provider.OnOrientation2Change -= Orientation2Provider_OnOrientation2Change;
         }
 
         private void Orientation2Provider_OnOrientation2Change(Orientation2 orientation2)

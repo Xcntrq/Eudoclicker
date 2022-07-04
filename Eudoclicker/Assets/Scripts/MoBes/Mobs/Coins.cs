@@ -4,6 +4,7 @@ using nsCoinsData;
 using nsIntValue;
 using UnityEngine;
 using nsICoins;
+using nsOnCoinDropEventArgs;
 
 namespace nsCoins
 {
@@ -20,7 +21,7 @@ namespace nsCoins
             _behaviourRandom = _behaviourSeed.Value == 0 ? new SysRandom(randomInt) : new SysRandom(_behaviourSeed.Value);
         }
 
-        public int Drop()
+        public OnCoinDropEventArgs Drop()
         {
             float chance;
             int coinAmount = 0;
@@ -29,7 +30,7 @@ namespace nsCoins
                 coinAmount++;
             }
             coinAmount += FinalDrop(chance);
-            return coinAmount;
+            return new OnCoinDropEventArgs(coinAmount, coinAmount == 0 ? null : _coinsData.CoinDropClip);
         }
 
         private int FinalDrop(float chance)

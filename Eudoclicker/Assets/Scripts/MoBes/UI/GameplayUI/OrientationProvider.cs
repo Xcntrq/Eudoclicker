@@ -20,21 +20,26 @@ namespace nsOrientationProvider
 
         private void OnRectTransformDimensionsChange()
         {
-            switch (Input.deviceOrientation)
+            if (isActiveAndEnabled)
             {
-                case DeviceOrientation.Unknown:
-                case DeviceOrientation.FaceUp:
-                case DeviceOrientation.FaceDown:
-                    OnOrientation2Change?.Invoke(Orientation2.Unknown);
-                    OnOrientation4Change?.Invoke(Orientation4.Unknown);
-                    break;
-                case DeviceOrientation.Portrait:
-                case DeviceOrientation.PortraitUpsideDown:
-                case DeviceOrientation.LandscapeLeft:
-                case DeviceOrientation.LandscapeRight:
-                default:
-                    InvokeEvents();
-                    break;
+                switch (Input.deviceOrientation)
+                {
+                    case DeviceOrientation.Unknown:
+                    case DeviceOrientation.FaceUp:
+                    case DeviceOrientation.FaceDown:
+                        OnOrientation2Change?.Invoke(Orientation2.Unknown);
+                        OnOrientation4Change?.Invoke(Orientation4.Unknown);
+                        //OnOrientation2Change?.Invoke(Orientation2.Landscape);
+                        //OnOrientation4Change?.Invoke(Orientation4.LandscapeLeft);
+                        break;
+                    case DeviceOrientation.Portrait:
+                    case DeviceOrientation.PortraitUpsideDown:
+                    case DeviceOrientation.LandscapeLeft:
+                    case DeviceOrientation.LandscapeRight:
+                    default:
+                        InvokeEvents();
+                        break;
+                }
             }
         }
 

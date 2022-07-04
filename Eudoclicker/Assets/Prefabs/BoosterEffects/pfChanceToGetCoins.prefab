@@ -46,5 +46,5 @@ MonoBehaviour:
   _playerCoinCount: {fileID: 0}
   _chance: 0.5
   _amountPerTry: 2
-  _timesRepeated: 1
+  _timesRepeated: 2
   _behaviourSeed: {fileID: 11400000, guid: 012c30452ca17be4f979fe9ceef76b8e, type: 2}

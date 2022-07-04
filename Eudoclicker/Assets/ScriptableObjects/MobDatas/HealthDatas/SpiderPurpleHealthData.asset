@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelBonus: 0.05
   _maxHealth: 1
+  _hurtClip:
+    _audioClip: {fileID: 8300000, guid: 6e8b70a99d8cec249abe2d897f1e1112, type: 3}
+    _volume: 0.3

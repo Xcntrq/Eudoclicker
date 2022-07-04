@@ -1,7 +1,9 @@
+using nsOnCoinDropEventArgs;
+
 namespace nsICoins
 {
     public interface ICoins
     {
-        public int Drop();
+        public OnCoinDropEventArgs Drop();
     }
 }

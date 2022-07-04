@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: SpiderPurpleCoinsData
   m_EditorClassIdentifier: 
   _coinChance: 0.5
+  _coinDropClip:
+    _audioClip: {fileID: 8300000, guid: 01796adb27b615140bfbb3dbf274b13d, type: 3}
+    _volume: 0.5
